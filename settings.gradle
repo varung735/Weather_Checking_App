@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "wheather_forecasting_app"
