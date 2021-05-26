@@ -3,6 +3,7 @@ package com.example.wheather_forecasting_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,13 +15,17 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +34,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import model.Current;
+import model.Hourly;
+import model.mainJSON;
+import model.Wheather;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,13 +49,27 @@ public class MainActivity extends AppCompatActivity {
     double latitude;
     double longitude;
 
+    ImageView iv_weather_img;
+    TextView tv_temp;
+    TextView tv_weather;
+    TextView tv_weather_desc;
+
+    RecyclerView rc_hourly;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        iv_weather_img = findViewById(R.id.main_weather_img);
+        tv_temp = findViewById(R.id.tv_temp);
+        tv_weather = findViewById(R.id.tv_weather);
+        tv_weather_desc = findViewById(R.id.tv_weather_desc);
 
+        rc_hourly = findViewById(R.id.rc_hourly);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        getLocation();
     }
 
     private void getLocation(){
@@ -100,7 +123,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.i("API_RESPONSE", "Success");
-                Toast.makeText(MainActivity.this, "Response Recieved", Toast.LENGTH_LONG).show();
+
+//                ArrayList<Hourly> Hourly =  mainJSON.parseMain(response.body()).hourly;
+                Current current = new Current();
+
+                Wheather icon = current.currentWeather.get(3);
+                Log.i("Inside-ge-weather", String.valueOf(icon));
+
+                Glide.with(MainActivity.this).load("http://openweathermap.org/img/wn/" + icon).into(iv_weather_img);
+                tv_temp.setText(String.valueOf(current.temp));
+                tv_weather.setText(String.valueOf(current.currentWeather.get(1)));
+                tv_weather_desc.setText(String.valueOf(current.currentWeather.get(2)));
             }
 
             @Override

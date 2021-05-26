@@ -17,7 +17,7 @@ public class Hourly {
     public double wind_speed;
     public int wind_deg;
     public double wind_gust;
-    public ArrayList<Wheather> weather;
+    public ArrayList<Wheather> hourlyWeather;
 
     public static Hourly parseHourly(JSONObject jsonObject){
         Hourly hourly = new Hourly();
@@ -33,7 +33,7 @@ public class Hourly {
         hourly.wind_deg = jsonObject.optInt("wind_deg");
         hourly.wind_gust = jsonObject.optDouble("wind_gust");
 
-        hourly.weather = new ArrayList<>();
+        hourly.hourlyWeather = new ArrayList<>();
 
         JSONArray weatherArray = jsonObject.optJSONArray("weather");
 
@@ -42,7 +42,7 @@ public class Hourly {
                 JSONObject weatherObject = weatherArray.optJSONObject(i);
 
                 Wheather weather = Wheather.parseWheather(weatherObject);
-                hourly.weather.add(weather);
+                hourly.hourlyWeather.add(weather);
             }
         }
 

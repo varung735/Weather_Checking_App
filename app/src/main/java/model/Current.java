@@ -17,7 +17,7 @@ public class Current {
     public int visibility;
     public int wind_speed;
     public int wind_deg;
-    public ArrayList<Wheather> weather;
+    public ArrayList<Wheather> currentWeather;
 
     public static Current parseCurrent(JSONObject jsonObject){
         Current current = new Current();
@@ -34,7 +34,7 @@ public class Current {
         current.wind_speed = jsonObject.optInt("wind_speed");
         current.wind_deg = jsonObject.optInt("wind_deg");
 
-        current.weather = new ArrayList<>();
+        current.currentWeather = new ArrayList<>();
 
         JSONArray weatherArray = jsonObject.optJSONArray("weather");
 
@@ -43,7 +43,7 @@ public class Current {
                 JSONObject weatherObject = weatherArray.optJSONObject(i);
 
                 Wheather weather = Wheather.parseWheather(weatherObject);
-                current.weather.add(weather);
+                current.currentWeather.add(weather);
             }
         }
 
