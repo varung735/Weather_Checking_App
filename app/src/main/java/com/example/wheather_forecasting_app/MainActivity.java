@@ -36,8 +36,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     FusedLocationProviderClient fusedLocationProviderClient;
-    Button locationBtn;
-    TextView tv_1, tv_2;
+
     double latitude;
     double longitude;
 
@@ -46,18 +45,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locationBtn = findViewById(R.id.location_btn);
-        tv_1 = findViewById(R.id.tv_1);
-        tv_2 = findViewById(R.id.tv_2);
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
 
-        locationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               getLocation();
-            }
-        });
     }
 
     private void getLocation(){
@@ -79,16 +68,6 @@ public class MainActivity extends AppCompatActivity {
                             longitude = (double) addresses.get(0).getLongitude();
 
                             getWeather(latitude, longitude);
-
-                            tv_1.setText(Html.fromHtml(
-                                    "<font color= '#000000'><b>Latitude :</b> <br></font>"
-                                    + addresses.get(0).getLatitude()
-                            ));
-
-                            tv_2.setText(Html.fromHtml(
-                                    "<font color= '#000000'><b>Longitude :</b> <br></font>"
-                                            + addresses.get(0).getLongitude()
-                            ));
 
                             Log.i("LATITUDE", String.valueOf(latitude));
                             Log.i("LONGITUDE", String.valueOf(longitude));
