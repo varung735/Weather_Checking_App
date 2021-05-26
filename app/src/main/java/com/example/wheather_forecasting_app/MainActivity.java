@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -22,16 +23,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     FusedLocationProviderClient fusedLocationProviderClient;
     Button locationBtn;
     TextView tv_1, tv_2;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
                             List<Address> addresses = geocoder.getFromLocation(
                                     location.getLatitude(),location.getLongitude(), 1);
 
-                            latitude = (float) addresses.get(0).getLatitude();
-                            longitude = (float) addresses.get(0).getLongitude();
+                            latitude = (double) addresses.get(0).getLatitude();
+                            longitude = (double) addresses.get(0).getLongitude();
+
+                            getWeather(latitude, longitude);
 
                             tv_1.setText(Html.fromHtml(
                                     "<font color= '#000000'><b>Latitude :</b> <br></font>"
@@ -93,5 +103,32 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this
                     ,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
+    }
+
+    private void getWeather(double lat, double lon){
+
+        apiInterface ApiInterface = apiClient.getClient().create(apiInterface.class);
+
+        HashMap<String, Object> queries = new HashMap<>();
+        queries.put("lat", lat);
+        queries.put("lon", lon);
+        queries.put("exclude", "minutely,dialy,alerts");
+        queries.put("appid", "1f3f706a08e8ab4cb030d825393fcbe6");
+
+        Call<String> getForecast = ApiInterface.getWeather(queries);
+
+        getForecast.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.i("API_RESPONSE", "Success");
+                Toast.makeText(MainActivity.this, "Response Recieved", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.i("API_RESPONSE", "Failed");
+                Toast.makeText(MainActivity.this, "Response Not Recieved", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

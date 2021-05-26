@@ -43,7 +43,7 @@ public class Hourly {
 
                 Wheather weather = Wheather.parseWheather(weatherObject);
                 hourly.weather.add(weather);
-            }  
+            }
         }
 
         return hourly;
