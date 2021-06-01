@@ -127,10 +127,12 @@ public class MainActivity extends AppCompatActivity {
 //                ArrayList<Hourly> Hourly =  mainJSON.parseMain(response.body()).hourly;
                 Current current = new Current();
 
-                Wheather icon = current.currentWeather.get(3);
-                Log.i("Inside-ge-weather", String.valueOf(icon));
+                ArrayList<Current> currentArray = mainJSON.parseMain(response.body()).current;
 
-                Glide.with(MainActivity.this).load("http://openweathermap.org/img/wn/" + icon).into(iv_weather_img);
+                Current weatherArray = currentArray.get(14);
+                Log.i("Inside-ge-weather", String.valueOf(weatherArray));
+
+                Glide.with(MainActivity.this).load("http://openweathermap.org/img/wn/" + weatherArray.currentWeather.get(3)).into(iv_weather_img);
                 tv_temp.setText(String.valueOf(current.temp));
                 tv_weather.setText(String.valueOf(current.currentWeather.get(1)));
                 tv_weather_desc.setText(String.valueOf(current.currentWeather.get(2)));
