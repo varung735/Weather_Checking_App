@@ -2,7 +2,9 @@ package model;
 
 import org.json.JSONObject;
 
-public class Wheather {
+import java.io.Serializable;
+
+public class Wheather implements Serializable {
     public int id;
     public String main;
     public String description;

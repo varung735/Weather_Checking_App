@@ -4,9 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class mainJSON {
+public class mainJSON implements Serializable {
     public double lat;
     public double lon;
     public String timeZone;

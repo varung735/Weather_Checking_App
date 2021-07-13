@@ -3,9 +3,10 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Current {
+public class Current implements Serializable {
     public long dt;
     public long sunrise;
     public long sunset;

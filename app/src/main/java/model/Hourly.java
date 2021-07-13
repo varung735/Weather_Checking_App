@@ -3,9 +3,10 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Hourly {
+public class Hourly implements Serializable {
 
     public long dt;
     public double temp;
